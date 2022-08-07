@@ -36,3 +36,11 @@ func (d *DOM) CreateElement(tag string) Element {
 	element := d.document.Call("createElement", tag)
 	return Element{element}
 }
+
+// Selects a single element in the DOM.
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
+func (d *DOM) QuerySelector(selector string) Element {
+	defer handleDOMError(fmt.Sprintf("querying selector %s", selector))
+	element := d.document.Call("querySelector", selector)
+	return Element{element}
+}
