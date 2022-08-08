@@ -1,23 +1,24 @@
 package godom
 
 // Get the title of the HTML document.
-func (d DOM) GetTitle() string {
+func (d DOM) GetTitle() (title string, err Error) {
 	defer func() {
-		if err := recover(); err != nil {
-			LogError("Error getting title - Did you forget to run DOM.init():\n" + err.(error).Error())
-
+		if r := recover(); r != nil {
+			err = domErrorf("getting document title")
 		}
 	}()
-	return d.document.Get("title").String()
+
+	return d.document.Get("title").String(), err
 }
 
 // Set the title of the HTML document.
-func (d DOM) SetTitle(title string) {
+func (d DOM) SetTitle(title string) (err Error) {
 	defer func() {
-		if err := recover(); err != nil {
-			LogError("Error setting title - Did you forget to run DOM.init():\n" + err.(error).Error())
-
+		if r := recover(); r != nil {
+			err = domErrorf("setting document title to %s", title)
 		}
 	}()
+
 	d.document.Set("title", title)
+	return err
 }
