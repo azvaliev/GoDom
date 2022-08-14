@@ -82,3 +82,24 @@ func (e *Element) AddEventListenerWithOptions(event EventName, callback EventHan
 		jsCallback.Release()
 	}, err
 }
+
+// Creates a debounce function that delays invoking func until after wait milliseconds have elapsed since the last time the debounced function was invoked.
+func Debounce(funcToDebounce func(), wait int) func() {
+
+	// Create an empty timeout variable
+	var timeout js.Value
+
+	return func() {
+		// Create a valid JS function go run Go callback
+		jsCallback := js.FuncOf(func(this js.Value, args []js.Value) any {
+			funcToDebounce()
+			return nil
+		})
+
+		// Clear previous timeout if it exists
+		js.Global().Call("clearTimeout", timeout)
+
+		// Set a timeout to run the function
+		timeout = js.Global().Call("setTimeout", jsCallback, wait)
+	}
+}

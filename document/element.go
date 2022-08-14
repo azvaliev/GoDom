@@ -96,3 +96,19 @@ func (e *Element) SetAttribute(attributeName string, value string) (err Error) {
 	e.raw.Set(attributeName, value)
 	return err
 }
+
+// Get the children of an element.
+// https://developer.mozilla.org/en-US/docs/Web/API/Element/children
+func (e *Element) GetChildren() (children []Element, err Error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = elementErrorf("get children of element")
+		}
+	}()
+
+	rawChildren := e.raw.Get("children")
+	for i := 0; i < rawChildren.Length(); i++ {
+		children = append(children, Element{rawChildren.Index(i)})
+	}
+	return children, err
+}
