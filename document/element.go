@@ -81,7 +81,7 @@ func (e *Element) GetAttribute(attributeName string) (attributeValue string, err
 		}
 	}()
 
-	return e.raw.Get(attributeName).String(), err
+	return e.raw.Call("getAttribute", attributeName).String(), err
 }
 
 // Set any attribute on the element.
@@ -93,7 +93,7 @@ func (e *Element) SetAttribute(attributeName string, value string) (err Error) {
 		}
 	}()
 
-	e.raw.Set(attributeName, value)
+	e.raw.Call("setAttribute", attributeName, value)
 	return err
 }
 
