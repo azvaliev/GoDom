@@ -46,6 +46,31 @@ func (e *Element) GetInnerText() (innerText string, err Error) {
 	return innerText, err
 }
 
+// Get the innerHTML of the element.
+// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
+func (e *Element) GetInnerHTML() (innerHTML string, err Error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = elementErrorf("get inner html of element")
+		}
+	}()
+
+	return e.raw.Get("innerHTML").String(), err
+}
+
+// Set the innerHTML of the element.
+// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
+func (e *Element) SetInnerHTML(html string) (err Error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = elementErrorf("set inner html of element")
+		}
+	}()
+
+	e.raw.Set("innerHTML", html)
+	return err
+}
+
 // Set the inner text of the element
 // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText
 func (e *Element) SetInnerText(text string) (err Error) {
